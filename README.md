@@ -1,3 +1,3 @@
-# Final Capstone Project IWA19
+# Final Capstone Project IWA19 : Book Connect Web App
 
-## A book library web application
+This is a a web application for a small startup called Book Contect
