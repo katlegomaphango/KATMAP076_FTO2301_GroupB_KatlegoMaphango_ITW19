@@ -1,2 +1,1 @@
-# KATMAP076_FTO2301_GroupB_KatlegoMaphango_ITW19
-IWA19_01: Final Capstone Submission
+# Final Capstone Project IWA19
