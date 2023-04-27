@@ -28,6 +28,7 @@ const data_header_searchBtn = document.querySelector('[data-header-search]')
 const data_search_cancelBtn = document.querySelector('[data-search-cancel]')
 const data_search_genres = document.querySelector('[data-search-genres]')
 const data_search_authors =document.querySelector('[data-search-authors]')
+const data_search_form = document.querySelector('[data-search-form]')
 
 let isOpen = false
 let matches = books
@@ -121,6 +122,88 @@ const data_searchHandler = (event) => {
         document.querySelector('[data-search-overlay]').style.display = ''
     }
 }
+const data_searchSubmitHandler = (event) => {
+    event.preventDefault()
+    const formData = new FormData(event.target)
+    const filters = Object.fromEntries(formData) //filters = {title: '', genre: '', author: ''}
+    let result = []
+
+    const tempAuthorId = Object.keys(authors).find(key => authors[key] === filters.author)
+    const tempGenreId = Object.keys(genres).find(key => genres[key] === filters.genre)
+
+    if (filters.title == '' && filters.genre == 'any' && filters.author == 'any') { result = matches }
+    if (filters.title != '' && filters.genre == 'any' && filters.author == 'any') {
+        result = matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase())
+        data_list_items.innerHTML = ''
+        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_message.classList.remove('list__message_show')
+        data_list_button.disabled = false
+    }
+    if (filters.title == '' && filters.genre != 'any' && filters.author == 'any') {
+        result = matches.filter( book => book.genres.includes(tempGenreId) )
+        data_list_items.innerHTML = ''
+        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_message.classList.remove('list__message_show')
+        data_list_button.disabled = false
+    }
+    if (filters.title == '' && filters.genre == 'any' && filters.author != 'any') {
+        result = matches.filter( book => book.author == tempAuthorId )
+        data_list_items.innerHTML = ''
+        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_message.classList.remove('list__message_show')
+        data_list_button.disabled = false
+    }
+    if (filters.title != '' && filters.genre != 'any' && filters.author == 'any') {
+        result = result.concat(
+            matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() ),
+            matches.filter( book => book.genres.includes(tempGenreId) )
+        )
+        data_list_items.innerHTML = ''
+        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_message.classList.remove('list__message_show')
+        data_list_button.disabled = false
+    }
+    if (filters.title == '' && filters.genre != 'any' && filters.author != 'any') {
+        result = result.concat(
+            matches.filter( book => book.author == tempAuthorId ),
+            matches.filter( book => book.genres.includes(tempGenreId) )
+        )
+        data_list_items.innerHTML = ''
+        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_message.classList.remove('list__message_show')
+        data_list_button.disabled = false
+    }
+    if (filters.title != '' && filters.genre == 'any' && filters.author != 'any') {
+        result = result.concat(
+            matches.filter( book => book.author == tempAuthorId ),
+            matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() )
+        )
+        data_list_items.innerHTML = ''
+        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_message.classList.remove('list__message_show')
+        data_list_button.disabled = false
+    }
+    if (filters.title != '' && filters.genre != 'any' && filters.author != 'any') {
+        result = result.concat(
+            matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() ),
+            matches.filter( book => book.genres.includes(tempGenreId) ),
+            matches.filter( book => book.author == tempAuthorId )
+        )
+        data_list_items.innerHTML = ''
+        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_message.classList.remove('list__message_show')
+        data_list_button.disabled = false
+    }
+
+    if (result.length == 0) {
+        data_list_items.innerHTML = ''
+        data_list_message.classList.add('list__message_show')
+        data_list_button.disabled = true
+    }
+
+    document.querySelector('.backdrop').style.display = 'none'
+    document.querySelector('[data-search-overlay]').style.display = ''
+}
 
 
 const createPreview = (bookObj) => {
@@ -188,6 +271,7 @@ data_list_button.innerHTML = /* html */ `
 
 data_header_searchBtn.addEventListener('click', data_searchHandler)
 data_search_cancelBtn.addEventListener('click', data_searchHandler)
+data_search_form.addEventListener('submit', data_searchSubmitHandler)
 
 data_list_button.addEventListener('click',data_list_showHandler)
 data_list_items.addEventListener('click', data_list_itemsHandler)
