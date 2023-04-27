@@ -1,5 +1,10 @@
 import { BOOKS_PER_PAGE, authors, genres, books } from "./data.js";
 console.log('hey first line')
+
+const data_settings_theme = document.querySelector('[data-settings-theme]')
+const data_header_settingsBtn = document.querySelector('[data-header-settings]')
+const data_settings_cancelBtn = document.querySelector('[data-settings-cancel]')
+const data_settings_form = document.querySelector('[data-settings-form]')
 // matches = books
 // page = 1;
 
