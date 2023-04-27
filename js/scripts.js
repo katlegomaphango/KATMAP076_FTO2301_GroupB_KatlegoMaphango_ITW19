@@ -26,6 +26,8 @@ const data_list_closeBtn = document.querySelector('[data-list-close]')
 // search 
 const data_header_searchBtn = document.querySelector('[data-header-search]')
 const data_search_cancelBtn = document.querySelector('[data-search-cancel]')
+const data_search_genres = document.querySelector('[data-search-genres]')
+const data_search_authors =document.querySelector('[data-search-authors]')
 
 let isOpen = false
 let matches = books
@@ -154,7 +156,28 @@ const createPreviewsFragment = (booksArray, booksPerPage, Page) => {
     return fragment
 }
 data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, page))
+const populateDropDown = (DropDownElement, DDType, dataObject) => {
+    const fragment = document.createDocumentFragment()
+    const fragmentElement = document.createElement('option')
+    fragmentElement.dataset.id = ''
+    fragmentElement.value = 'any'
+    fragmentElement.innerText = `All ${DDType}`
+    fragment.appendChild(fragmentElement)
 
+    for(let i = 0; i < Object.entries(dataObject).length; i++) {
+        const [id, name] = Object.entries(dataObject)[i]
+        const element = document.createElement('option')
+        element.dataset.id = id
+        element.value = name
+        element.innerText = name
+        fragment.appendChild(element)
+    }
+
+    DropDownElement.appendChild(fragment)
+}
+
+populateDropDown(data_search_authors, 'Authors', authors)
+populateDropDown(data_search_genres, 'Genres', genres)
 
 data_list_button.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
 data_list_button.disabled = !(matches.length - [page * BOOKS_PER_PAGE] > 0)
