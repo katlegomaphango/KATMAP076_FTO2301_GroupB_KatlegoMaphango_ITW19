@@ -35,6 +35,7 @@ const data_settingsHandler = (event) => {
 }
 
 data_header_settingsBtn.addEventListener('click', data_settingsHandler)
+data_settings_cancelBtn.addEventListener('click', data_settingsHandler)
 // fragment = document.createDocumentFragment()
 // const extracted = books.slice(0, 36)
 
