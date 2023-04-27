@@ -14,6 +14,14 @@ const data_list_items = document.querySelector('[data-list-items]')
 const data_list_button = document.querySelector('[data-list-button]')
 const data_list_message = document.querySelector('[data-list-message]')
 
+// book summary
+const data_list_active = document.querySelector('[data-list-active]')
+const data_list_blur = document.querySelector('[data-list-blur]')
+const data_list_image = document.querySelector('[data-list-image]')
+const data_list_title = document.querySelector('[data-list-title]')
+const data_list_subtitle = document.querySelector('[data-list-subtitle]')
+const data_list_description = document.querySelector('[data-list-description]')
+
 let isOpen = false
 let matches = books
 let page = 1;
@@ -70,6 +78,32 @@ const data_list_showHandler = () => {
         data_list_button.disabled = true
     }
 }
+const data_list_itemsHandler = (event) => {
+    const pathArray = Array.from(event.path || event.composedPath())
+    let bookId
+    let bookObj
+
+    for(let i = 0; i < pathArray.length; i++) {
+        if(pathArray[i].dataset.id) {
+            bookId = pathArray[i].dataset.id
+            break
+        }
+    }
+
+    for(let i = 0; i < matches.length; i++){
+        if(matches[i].id === bookId) {
+            bookObj = matches[i]
+            break
+        }
+    }
+
+    data_list_active.open = true
+    data_list_blur.src = bookObj.image
+    data_list_image.src = bookObj.image
+    data_list_title.innerText = bookObj.title
+    data_list_subtitle.innerText = `${authors[bookObj.author]} (${new Date(bookObj.published).getFullYear()})`
+    data_list_description.innerText = bookObj.description
+}
 const createPreview = (bookObj) => {
     const { author, image, title, id } = bookObj
 
@@ -113,6 +147,7 @@ data_list_button.innerHTML = /* html */ `
 `
 
 data_list_button.addEventListener('click',data_list_showHandler)
+data_list_items.addEventListener('click', data_list_itemsHandler)
 
 data_settings_form.addEventListener('submit', data_settingsFormHandler)
 data_header_settingsBtn.addEventListener('click', data_settingsHandler)
