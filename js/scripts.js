@@ -21,6 +21,7 @@ const data_list_image = document.querySelector('[data-list-image]')
 const data_list_title = document.querySelector('[data-list-title]')
 const data_list_subtitle = document.querySelector('[data-list-subtitle]')
 const data_list_description = document.querySelector('[data-list-description]')
+const data_list_closeBtn = document.querySelector('[data-list-close]')
 
 let isOpen = false
 let matches = books
@@ -104,6 +105,8 @@ const data_list_itemsHandler = (event) => {
     data_list_subtitle.innerText = `${authors[bookObj.author]} (${new Date(bookObj.published).getFullYear()})`
     data_list_description.innerText = bookObj.description
 }
+
+
 const createPreview = (bookObj) => {
     const { author, image, title, id } = bookObj
 
@@ -148,6 +151,7 @@ data_list_button.innerHTML = /* html */ `
 
 data_list_button.addEventListener('click',data_list_showHandler)
 data_list_items.addEventListener('click', data_list_itemsHandler)
+data_list_closeBtn.addEventListener('click', () => data_list_active.open = false )
 
 data_settings_form.addEventListener('submit', data_settingsFormHandler)
 data_header_settingsBtn.addEventListener('click', data_settingsHandler)
