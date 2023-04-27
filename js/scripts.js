@@ -25,6 +25,7 @@ const data_list_closeBtn = document.querySelector('[data-list-close]')
 
 // search 
 const data_header_searchBtn = document.querySelector('[data-header-search]')
+const data_search_cancelBtn = document.querySelector('[data-search-cancel]')
 
 let isOpen = false
 let matches = books
@@ -163,6 +164,7 @@ data_list_button.innerHTML = /* html */ `
 `
 
 data_header_searchBtn.addEventListener('click', data_searchHandler)
+data_search_cancelBtn.addEventListener('click', data_searchHandler)
 
 data_list_button.addEventListener('click',data_list_showHandler)
 data_list_items.addEventListener('click', data_list_itemsHandler)
