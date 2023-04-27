@@ -23,6 +23,9 @@ const data_list_subtitle = document.querySelector('[data-list-subtitle]')
 const data_list_description = document.querySelector('[data-list-description]')
 const data_list_closeBtn = document.querySelector('[data-list-close]')
 
+// search 
+const data_header_searchBtn = document.querySelector('[data-header-search]')
+
 let isOpen = false
 let matches = books
 let page = 1;
@@ -105,6 +108,16 @@ const data_list_itemsHandler = (event) => {
     data_list_subtitle.innerText = `${authors[bookObj.author]} (${new Date(bookObj.published).getFullYear()})`
     data_list_description.innerText = bookObj.description
 }
+const data_searchHandler = (event) => {
+    isOpen = !isOpen
+    if(isOpen) {
+        document.querySelector('.backdrop').style.display = 'block'
+        document.querySelector('[data-search-overlay]').style.display = 'block'
+    } else {
+        document.querySelector('.backdrop').style.display = 'none'
+        document.querySelector('[data-search-overlay]').style.display = ''
+    }
+}
 
 
 const createPreview = (bookObj) => {
@@ -149,6 +162,8 @@ data_list_button.innerHTML = /* html */ `
     <span class="list__remaining"> (${matches.length - [page * BOOKS_PER_PAGE] > 0 ? matches.length - [page * BOOKS_PER_PAGE] : 0})</span>
 `
 
+data_header_searchBtn.addEventListener('click', data_searchHandler)
+
 data_list_button.addEventListener('click',data_list_showHandler)
 data_list_items.addEventListener('click', data_list_itemsHandler)
 data_list_closeBtn.addEventListener('click', () => data_list_active.open = false )
@@ -156,6 +171,28 @@ data_list_closeBtn.addEventListener('click', () => data_list_active.open = false
 data_settings_form.addEventListener('submit', data_settingsFormHandler)
 data_header_settingsBtn.addEventListener('click', data_settingsHandler)
 data_settings_cancelBtn.addEventListener('click', data_settingsHandler)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // fragment = document.createDocumentFragment()
 // const extracted = books.slice(0, 36)
 
