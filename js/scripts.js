@@ -1,14 +1,22 @@
 import { BOOKS_PER_PAGE, authors, genres, books } from "./data.js";
+
+if (!books && !Array.isArray(books)) throw new Error('Source required') 
 console.log('hey first line')
 
+// Theme Day/Night
 const data_settings_theme = document.querySelector('[data-settings-theme]')
 const data_header_settingsBtn = document.querySelector('[data-header-settings]')
 const data_settings_cancelBtn = document.querySelector('[data-settings-cancel]')
 const data_settings_form = document.querySelector('[data-settings-form]')
 
+// Book List
+const data_list_items = document.querySelector('[data-list-items]')
+const data_list_button = document.querySelector('[data-list-button]')
+const data_list_message = document.querySelector('[data-list-message]')
+
 let isOpen = false
-// matches = books
-// page = 1;
+let matches = books
+let page = 1;
 
 // if (!books && !Array.isArray(books)) throw new Error('Source required') 
 // if (!range && range.length < 2) throw new Error('Range must be an array with two numbers')
@@ -17,11 +25,11 @@ const day = {
     dark: '10, 10, 20',
     light: '255, 255, 255',
 }
-
 const night = {
     dark: '255, 255, 255',
     light: '10, 10, 20',
 }
+
 
 const data_settingsHandler = (event) => {
     isOpen = !isOpen
@@ -45,6 +53,66 @@ const data_settingsFormHandler = (event) => {
     document.querySelector('.backdrop').style.display = 'none'
     document.querySelector('[data-settings-overlay]').style.display = ''
 }
+const data_list_showHandler = () => {
+    if(matches.length > 0){
+        data_list_button.disabled = false
+        data_list_message.classList.remove('list__message_show')
+        data_list_items.innerHTML = ''
+        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE ,page + 1))
+        page += 1 
+        data_list_button.innerHTML = /* html */ `
+            <span>Show more</span>
+            <span class="list__remaining"> (${matches.length - (BOOKS_PER_PAGE * page)})</span>
+        `
+    } else {
+        data_list_items.innerHTML = ''
+        data_list_message.classList.add('list__message_show')
+        data_list_button.disabled = true
+    }
+}
+const createPreview = (bookObj) => {
+    const { author, image, title, id } = bookObj
+
+    const previewElement = document.createElement('div')
+    previewElement.className = 'preview'
+    previewElement.dataset.id = id
+
+    previewElement.innerHTML = /* Html*/ `
+        <div>
+            <img class="preview__image" src="${image}" alt="book image">
+        </div>
+        <div class="preview__info">
+            <div class="preview__title">${title}</div>
+            <div class="preview__author">${authors[author]}</div>
+        </div>
+    `
+    return previewElement
+}
+const createPreviewsFragment = (booksArray, booksPerPage, Page) => {
+    const fragment = document.createDocumentFragment()
+    const extracted = booksArray.slice(0, booksPerPage*Page)
+
+    for (let i = 0; i < extracted.length; i++) {
+        const { author, image, title, id } = extracted[i]
+
+        const preview = createPreview( { author, id, image, title } )
+
+        fragment.appendChild(preview)
+    }
+
+    return fragment
+}
+data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, page))
+
+
+data_list_button.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
+data_list_button.disabled = !(matches.length - [page * BOOKS_PER_PAGE] > 0)
+data_list_button.innerHTML = /* html */ `
+    <span>Show more</span>
+    <span class="list__remaining"> (${matches.length - [page * BOOKS_PER_PAGE] > 0 ? matches.length - [page * BOOKS_PER_PAGE] : 0})</span>
+`
+
+data_list_button.addEventListener('click',data_list_showHandler)
 
 data_settings_form.addEventListener('submit', data_settingsFormHandler)
 data_header_settingsBtn.addEventListener('click', data_settingsHandler)
