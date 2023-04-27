@@ -5,22 +5,36 @@ const data_settings_theme = document.querySelector('[data-settings-theme]')
 const data_header_settingsBtn = document.querySelector('[data-header-settings]')
 const data_settings_cancelBtn = document.querySelector('[data-settings-cancel]')
 const data_settings_form = document.querySelector('[data-settings-form]')
+
+let isOpen = false
 // matches = books
 // page = 1;
 
 // if (!books && !Array.isArray(books)) throw new Error('Source required') 
 // if (!range && range.length < 2) throw new Error('Range must be an array with two numbers')
 
-// day = {
-//     dark: '10, 10, 20',
-//     light: '255, 255, 255',
-// }
+const day = {
+    dark: '10, 10, 20',
+    light: '255, 255, 255',
+}
 
-// night = {
-//     dark: '255, 255, 255',
-//     light: '10, 10, 20',
-// }
+const night = {
+    dark: '255, 255, 255',
+    light: '10, 10, 20',
+}
 
+const data_settingsHandler = (event) => {
+    isOpen = !isOpen
+    if(isOpen) {
+        document.querySelector('.backdrop').style.display = 'block'
+        document.querySelector('[data-settings-overlay]').style.display = 'block'
+    } else {
+        document.querySelector('.backdrop').style.display = 'none'
+        document.querySelector('[data-settings-overlay]').style.display = ''
+    }
+}
+
+data_header_settingsBtn.addEventListener('click', data_settingsHandler)
 // fragment = document.createDocumentFragment()
 // const extracted = books.slice(0, 36)
 
