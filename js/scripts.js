@@ -33,7 +33,20 @@ const data_settingsHandler = (event) => {
         document.querySelector('[data-settings-overlay]').style.display = ''
     }
 }
+const data_settingsFormHandler = (event) => {
+    event.preventDefault()
+    if (data_settings_theme.value == 'day') {
+        document.documentElement.style.setProperty('--color-dark', day.dark)
+        document.documentElement.style.setProperty('--color-light', day.light)
+    } else {
+        document.documentElement.style.setProperty('--color-dark', night.dark)
+        document.documentElement.style.setProperty('--color-light', night.light)
+    }
+    document.querySelector('.backdrop').style.display = 'none'
+    document.querySelector('[data-settings-overlay]').style.display = ''
+}
 
+data_settings_form.addEventListener('submit', data_settingsFormHandler)
 data_header_settingsBtn.addEventListener('click', data_settingsHandler)
 data_settings_cancelBtn.addEventListener('click', data_settingsHandler)
 // fragment = document.createDocumentFragment()
