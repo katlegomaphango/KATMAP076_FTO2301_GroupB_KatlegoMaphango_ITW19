@@ -46,7 +46,7 @@ const night = {
     light: '10, 10, 20',
 }
 
-
+// Event Handlers
 const data_settingsHandler = (event) => {
     isOpen = !isOpen
     if(isOpen) {
@@ -125,77 +125,76 @@ const data_searchHandler = (event) => {
 const data_searchSubmitHandler = (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
-    const filters = Object.fromEntries(formData) //filters = {title: '', genre: '', author: ''}
-    let result = []
+    const filters = Object.fromEntries(formData)
 
     const tempAuthorId = Object.keys(authors).find(key => authors[key] === filters.author)
     const tempGenreId = Object.keys(genres).find(key => genres[key] === filters.genre)
 
-    if (filters.title == '' && filters.genre == 'any' && filters.author == 'any') { result = matches }
+    if (filters.title == '' && filters.genre == 'any' && filters.author == 'any') { matches = matches }
     if (filters.title != '' && filters.genre == 'any' && filters.author == 'any') {
-        result = matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase())
+        matches = matches.filter( book => book.title.toLowerCase().includes(filters.title.toLowerCase()))
         data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
         data_list_message.classList.remove('list__message_show')
         data_list_button.disabled = false
     }
     if (filters.title == '' && filters.genre != 'any' && filters.author == 'any') {
-        result = matches.filter( book => book.genres.includes(tempGenreId) )
+        matches = matches.filter( book => book.genres.includes(tempGenreId) )
         data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
         data_list_message.classList.remove('list__message_show')
         data_list_button.disabled = false
     }
     if (filters.title == '' && filters.genre == 'any' && filters.author != 'any') {
-        result = matches.filter( book => book.author == tempAuthorId )
+        matches = matches.filter( book => book.author == tempAuthorId )
         data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
         data_list_message.classList.remove('list__message_show')
         data_list_button.disabled = false
     }
     if (filters.title != '' && filters.genre != 'any' && filters.author == 'any') {
-        result = result.concat(
+        matches = result.concat(
             matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() ),
             matches.filter( book => book.genres.includes(tempGenreId) )
         )
         data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
         data_list_message.classList.remove('list__message_show')
         data_list_button.disabled = false
     }
     if (filters.title == '' && filters.genre != 'any' && filters.author != 'any') {
-        result = result.concat(
+        matches = result.concat(
             matches.filter( book => book.author == tempAuthorId ),
             matches.filter( book => book.genres.includes(tempGenreId) )
         )
         data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
         data_list_message.classList.remove('list__message_show')
         data_list_button.disabled = false
     }
     if (filters.title != '' && filters.genre == 'any' && filters.author != 'any') {
-        result = result.concat(
+        matches = result.concat(
             matches.filter( book => book.author == tempAuthorId ),
             matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() )
         )
         data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
         data_list_message.classList.remove('list__message_show')
         data_list_button.disabled = false
     }
     if (filters.title != '' && filters.genre != 'any' && filters.author != 'any') {
-        result = result.concat(
+        matches = result.concat(
             matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() ),
             matches.filter( book => book.genres.includes(tempGenreId) ),
             matches.filter( book => book.author == tempAuthorId )
         )
         data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(result, BOOKS_PER_PAGE, 1))
+        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
         data_list_message.classList.remove('list__message_show')
         data_list_button.disabled = false
     }
 
-    if (result.length == 0) {
+    if (matches.length == 0) {
         data_list_items.innerHTML = ''
         data_list_message.classList.add('list__message_show')
         data_list_button.disabled = true
@@ -239,6 +238,7 @@ const createPreviewsFragment = (booksArray, booksPerPage, Page) => {
     return fragment
 }
 data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, page))
+
 const populateDropDown = (DropDownElement, DDType, dataObject) => {
     const fragment = document.createDocumentFragment()
     const fragmentElement = document.createElement('option')
@@ -262,13 +262,23 @@ const populateDropDown = (DropDownElement, DDType, dataObject) => {
 populateDropDown(data_search_authors, 'Authors', authors)
 populateDropDown(data_search_genres, 'Genres', genres)
 
-data_list_button.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
-data_list_button.disabled = !(matches.length - [page * BOOKS_PER_PAGE] > 0)
-data_list_button.innerHTML = /* html */ `
-    <span>Show more</span>
-    <span class="list__remaining"> (${matches.length - [page * BOOKS_PER_PAGE] > 0 ? matches.length - [page * BOOKS_PER_PAGE] : 0})</span>
-`
+// const updateShowMoreBtn = () => {
+//     let Books = bookArray - Page
+//     if(books <= 0) {
+//         data_list_button.disabled = true
+//         return
+//     }
 
+//     let range = books.length - books
+// }
+// data_list_button.innerText = `Show more (${books.length - BOOKS_PER_PAGE})`
+// data_list_button.disabled = !(matches.length - [page * BOOKS_PER_PAGE] > 0)
+// data_list_button.innerHTML = /* html */ `
+//     <span>Show more</span>
+//     <span class="list__remaining"> (${matches.length - [page * BOOKS_PER_PAGE] > 0 ? matches.length - [page * BOOKS_PER_PAGE] : 0})</span>
+// `
+
+// Event listeners
 data_header_searchBtn.addEventListener('click', data_searchHandler)
 data_search_cancelBtn.addEventListener('click', data_searchHandler)
 data_search_form.addEventListener('submit', data_searchSubmitHandler)
