@@ -1,7 +1,6 @@
 import { BOOKS_PER_PAGE, authors, genres, books } from "./data.js";
 
 if (!books && !Array.isArray(books)) throw new Error('Source required') 
-console.log('hey first line')
 
 // Theme Day/Night
 const data_settings_theme = document.querySelector('[data-settings-theme]')
@@ -33,9 +32,6 @@ const data_search_form = document.querySelector('[data-search-form]')
 let isOpen = false
 let matches = books
 let page = 1;
-
-// if (!books && !Array.isArray(books)) throw new Error('Source required') 
-// if (!range && range.length < 2) throw new Error('Range must be an array with two numbers')
 
 const day = {
     dark: '10, 10, 20',
