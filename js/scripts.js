@@ -1,5 +1,6 @@
 import { BOOKS_PER_PAGE, authors, genres, books, html } from "./data.js";
 
+// check if book exist and of type array 
 if (!books && !Array.isArray(books)) throw new Error('Source required') 
 
 let isOpen = false
@@ -164,7 +165,13 @@ const searchSubmitHandler = (event) => {
     html.search.overlay.style.display = ''
 }
 
-
+/**
+ * Takes a book object and converts it to an HTML element and 
+ * returns that HTML element that can be appended to the DOM.
+ * 
+ * @param {object} bookObj 
+ * @returns {HTMLElement}
+ */
 const createPreview = (bookObj) => {
     const { author, image, title, id } = bookObj
 
@@ -183,6 +190,15 @@ const createPreview = (bookObj) => {
     `
     return previewElement
 }
+
+/**
+ * creates a document fragment of previews and returns the fragment
+ * 
+ * @param {Array} booksArray 
+ * @param {number} booksPerPage 
+ * @param {number} Page 
+ * @returns {HTMLElement}
+ */
 const createPreviewsFragment = (booksArray, booksPerPage, Page) => {
     const fragment = document.createDocumentFragment()
     const extracted = booksArray.slice(0, booksPerPage*Page)
@@ -199,6 +215,13 @@ const createPreviewsFragment = (booksArray, booksPerPage, Page) => {
 }
 html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, page))
 
+/**
+ * populates a drop down list
+ * 
+ * @param {HTMLElement} DropDownElement 
+ * @param {string} DDType 
+ * @param {object} dataObject 
+ */
 const populateDropDown = (DropDownElement, DDType, dataObject) => {
     const fragment = document.createDocumentFragment()
     const fragmentElement = document.createElement('option')

@@ -25417,6 +25417,12 @@ export const books = [
   }
 ]
 
+/**
+ * An object literal that contains references to all the HTML elements
+ * referenced through the operation of the app either upon initialization or
+ * while its running (via event listeners). This ensure that all UI elements can
+ * be accessed and seen in a structured manner in a single data structure.
+ */
 export const html = {
   theme: {
     settings_theme: document.querySelector('[data-settings-theme]'),
