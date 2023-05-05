@@ -6,13 +6,8 @@ let isOpen = false
 let matches = books
 let page = 1;
 
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    const newColorScheme = e.matches ? "dark" : "light";
-    console.log(e)
-});
-
 // Event Handlers
-const data_settingsHandler = (event) => {
+const settingsHandler = (event) => {
     isOpen = !isOpen
     if(isOpen) {
         html.backdrop.style.display = 'block'
@@ -22,7 +17,7 @@ const data_settingsHandler = (event) => {
         html.theme.overlay.style.display = ''
     }
 }
-const data_settingsFormHandler = (event) => {
+const settingsFormHandler = (event) => {
     event.preventDefault()
     if (html.theme.settings_theme.value == 'day') {
         document.documentElement.style.setProperty('--color-dark', html.theme.day.dark)
@@ -34,7 +29,7 @@ const data_settingsFormHandler = (event) => {
     html.backdrop.style.display = 'none'
     html.theme.overlay.style.display = ''
 }
-const data_list_showHandler = () => {
+const listShowHandler = () => {
     if(matches.length > 0){
         html.list.data_button.disabled = false
         html.list.data_message.classList.remove('list__message_show')
@@ -51,7 +46,7 @@ const data_list_showHandler = () => {
         html.list.data_button.disabled = true
     }
 }
-const data_list_itemsHandler = (event) => {
+const listItemsHandler = (event) => {
     const pathArray = Array.from(event.path || event.composedPath())
     let bookId
     let bookObj
@@ -77,7 +72,7 @@ const data_list_itemsHandler = (event) => {
     html.summary.subtitle.innerText = `${authors[bookObj.author]} (${new Date(bookObj.published).getFullYear()})`
     html.summary.description.innerText = bookObj.description
 }
-const data_searchHandler = (event) => {
+const searchHandler = (event) => {
     isOpen = !isOpen
     if(isOpen) {
         html.backdrop.style.display = 'block'
@@ -87,7 +82,7 @@ const data_searchHandler = (event) => {
         html.search.overlay.style.display = ''
     }
 }
-const data_searchSubmitHandler = (event) => {
+const searchSubmitHandler = (event) => {
     event.preventDefault()
     const formData = new FormData(event.target)
     const filters = Object.fromEntries(formData)
@@ -234,14 +229,14 @@ html.list.data_button.innerHTML = /* html */ `
 `
 
 // Event listeners
-html.search.search.addEventListener('click', data_searchHandler)
-html.search.cancel.addEventListener('click', data_searchHandler)
-html.search.form.addEventListener('submit', data_searchSubmitHandler)
+html.search.search.addEventListener('click', searchHandler)
+html.search.cancel.addEventListener('click', searchHandler)
+html.search.form.addEventListener('submit', searchSubmitHandler)
 
-html.list.data_button.addEventListener('click',data_list_showHandler)
-html.list.data_items.addEventListener('click', data_list_itemsHandler)
+html.list.data_button.addEventListener('click',listShowHandler)
+html.list.data_items.addEventListener('click', listItemsHandler)
 html.summary.close.addEventListener('click', () => html.summary.active.open = false )
 
-html.theme.settings_form.addEventListener('submit', data_settingsFormHandler)
-html.theme.settings_header.addEventListener('click', data_settingsHandler)
-html.theme.settings_cancel.addEventListener('click', data_settingsHandler)
+html.theme.settings_form.addEventListener('submit', settingsFormHandler)
+html.theme.settings_header.addEventListener('click', settingsHandler)
+html.theme.settings_cancel.addEventListener('click', settingsHandler)
