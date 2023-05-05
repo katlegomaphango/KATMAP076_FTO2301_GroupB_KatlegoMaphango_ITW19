@@ -15,11 +15,11 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
 const data_settingsHandler = (event) => {
     isOpen = !isOpen
     if(isOpen) {
-        document.querySelector('.backdrop').style.display = 'block'
-        document.querySelector('[data-settings-overlay]').style.display = 'block'
+        html.backdrop.style.display = 'block'
+        html.theme.overlay.style.display = 'block'
     } else {
-        document.querySelector('.backdrop').style.display = 'none'
-        document.querySelector('[data-settings-overlay]').style.display = ''
+        html.backdrop.style.display = 'none'
+        html.theme.overlay.style.display = ''
     }
 }
 const data_settingsFormHandler = (event) => {
@@ -31,24 +31,24 @@ const data_settingsFormHandler = (event) => {
         document.documentElement.style.setProperty('--color-dark', html.theme.night.dark)
         document.documentElement.style.setProperty('--color-light', html.theme.night.light)
     }
-    document.querySelector('.backdrop').style.display = 'none'
-    document.querySelector('[data-settings-overlay]').style.display = ''
+    html.backdrop.style.display = 'none'
+    html.theme.overlay.style.display = ''
 }
 const data_list_showHandler = () => {
     if(matches.length > 0){
-        data_list_button.disabled = false
-        data_list_message.classList.remove('list__message_show')
-        data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE ,page + 1))
+        html.list.data_button.disabled = false
+        html.list.data_message.classList.remove('list__message_show')
+        html.list.data_items.innerHTML = ''
+        html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE ,page + 1))
         page += 1 
-        data_list_button.innerHTML = /* html */ `
+        html.list.data_button.innerHTML = /* html */ `
             <span>Show more</span>
             <span class="list__remaining"> (${matches.length - (BOOKS_PER_PAGE * page)})</span>
         `
     } else {
-        data_list_items.innerHTML = ''
-        data_list_message.classList.add('list__message_show')
-        data_list_button.disabled = true
+        html.list.data_items.innerHTML = ''
+        html.list.data_message.classList.add('list__message_show')
+        html.list.data_button.disabled = true
     }
 }
 const data_list_itemsHandler = (event) => {
@@ -80,11 +80,11 @@ const data_list_itemsHandler = (event) => {
 const data_searchHandler = (event) => {
     isOpen = !isOpen
     if(isOpen) {
-        document.querySelector('.backdrop').style.display = 'block'
-        document.querySelector('[data-search-overlay]').style.display = 'block'
+        html.backdrop.style.display = 'block'
+        html.search.overlay.style.display = 'block'
     } else {
-        document.querySelector('.backdrop').style.display = 'none'
-        document.querySelector('[data-search-overlay]').style.display = ''
+        html.backdrop.style.display = 'none'
+        html.search.overlay.style.display = ''
     }
 }
 const data_searchSubmitHandler = (event) => {
@@ -98,75 +98,75 @@ const data_searchSubmitHandler = (event) => {
     if (filters.title == '' && filters.genre == 'any' && filters.author == 'any') { matches = matches }
     if (filters.title != '' && filters.genre == 'any' && filters.author == 'any') {
         matches = matches.filter( book => book.title.toLowerCase().includes(filters.title.toLowerCase()))
-        data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
-        data_list_message.classList.remove('list__message_show')
-        data_list_button.disabled = false
+        html.list.data_items.innerHTML = ''
+        html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
+        html.list.data_message.classList.remove('list__message_show')
+        html.list.data_button.disabled = false
     }
     if (filters.title == '' && filters.genre != 'any' && filters.author == 'any') {
         matches = matches.filter( book => book.genres.includes(tempGenreId) )
-        data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
-        data_list_message.classList.remove('list__message_show')
-        data_list_button.disabled = false
+        html.list.data_items.innerHTML = ''
+        html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
+        html.list.data_message.classList.remove('list__message_show')
+        html.list.data_button.disabled = false
     }
     if (filters.title == '' && filters.genre == 'any' && filters.author != 'any') {
         matches = matches.filter( book => book.author == tempAuthorId )
-        data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
-        data_list_message.classList.remove('list__message_show')
-        data_list_button.disabled = false
+        html.list.data_items.innerHTML = ''
+        html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
+        html.list.data_message.classList.remove('list__message_show')
+        html.list.data_button.disabled = false
     }
     if (filters.title != '' && filters.genre != 'any' && filters.author == 'any') {
-        matches = result.concat(
+        matches = matches.concat(
             matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() ),
             matches.filter( book => book.genres.includes(tempGenreId) )
         )
-        data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
-        data_list_message.classList.remove('list__message_show')
-        data_list_button.disabled = false
+        html.list.data_items.innerHTML = ''
+        html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
+        html.list.data_message.classList.remove('list__message_show')
+        html.list.data_button.disabled = false
     }
     if (filters.title == '' && filters.genre != 'any' && filters.author != 'any') {
-        matches = result.concat(
+        matches = matches.concat(
             matches.filter( book => book.author == tempAuthorId ),
             matches.filter( book => book.genres.includes(tempGenreId) )
         )
-        data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
-        data_list_message.classList.remove('list__message_show')
-        data_list_button.disabled = false
+        html.list.data_items.innerHTML = ''
+        html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
+        html.list.data_message.classList.remove('list__message_show')
+        html.list.data_button.disabled = false
     }
     if (filters.title != '' && filters.genre == 'any' && filters.author != 'any') {
-        matches = result.concat(
+        matches = matches.concat(
             matches.filter( book => book.author == tempAuthorId ),
             matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() )
         )
-        data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
-        data_list_message.classList.remove('list__message_show')
-        data_list_button.disabled = false
+        html.list.data_items.innerHTML = ''
+        html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
+        html.list.data_message.classList.remove('list__message_show')
+        html.list.data_button.disabled = false
     }
     if (filters.title != '' && filters.genre != 'any' && filters.author != 'any') {
-        matches = result.concat(
+        matches = matches.concat(
             matches.filter( book => book.title.toLowerCase() == filters.title.toLowerCase() ),
             matches.filter( book => book.genres.includes(tempGenreId) ),
             matches.filter( book => book.author == tempAuthorId )
         )
-        data_list_items.innerHTML = ''
-        data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
-        data_list_message.classList.remove('list__message_show')
-        data_list_button.disabled = false
+        html.list.data_items.innerHTML = ''
+        html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, 1))
+        html.list.data_message.remove('list__message_show')
+        html.list.data_button.disabled = false
     }
 
     if (matches.length == 0) {
-        data_list_items.innerHTML = ''
-        data_list_message.classList.add('list__message_show')
-        data_list_button.disabled = true
+        html.list.data_items.innerHTML = ''
+        html.list.data_message.classList.add('list__message_show')
+        html.list.data_button.disabled = true
     }
 
-    document.querySelector('.backdrop').style.display = 'none'
-    document.querySelector('[data-search-overlay]').style.display = ''
+    html.backdrop.style.display = 'none'
+    html.search.overlay.style.display = ''
 }
 
 

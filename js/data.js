@@ -25423,6 +25423,7 @@ export const html = {
     settings_header: document.querySelector('[data-header-settings]'),
     settings_cancel: document.querySelector('[data-settings-cancel]'),
     settings_form: document.querySelector('[data-settings-form]'),
+    overlay: document.querySelector('[data-settings-overlay]'),
     day: {
       dark: '10, 10, 20',
       light: '255, 255, 255',
@@ -25443,6 +25444,7 @@ export const html = {
     authors: document.querySelector('[data-search-authors]'),
     form: document.querySelector('[data-search-form]'),
     cancel: document.querySelector('[data-search-cancel]'),
+    overlay: document.querySelector('[data-search-overlay]'),
   },
   summary: {
     active: document.querySelector('[data-list-active]'),
@@ -25452,5 +25454,6 @@ export const html = {
     subtitle: document.querySelector('[data-list-subtitle]'),
     description: document.querySelector('[data-list-description]'),
     close: document.querySelector('[data-list-close]'),
-  }
+  },
+  backdrop: document.querySelector('.backdrop')
 }
