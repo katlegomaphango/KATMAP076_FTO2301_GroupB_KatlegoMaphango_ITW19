@@ -1,46 +1,10 @@
-import { BOOKS_PER_PAGE, authors, genres, books } from "./data.js";
+import { BOOKS_PER_PAGE, authors, genres, books, html } from "./data.js";
 
 if (!books && !Array.isArray(books)) throw new Error('Source required') 
-
-// Theme Day/Night
-const data_settings_theme = document.querySelector('[data-settings-theme]')
-const data_header_settingsBtn = document.querySelector('[data-header-settings]')
-const data_settings_cancelBtn = document.querySelector('[data-settings-cancel]')
-const data_settings_form = document.querySelector('[data-settings-form]')
-
-// Book List
-const data_list_items = document.querySelector('[data-list-items]')
-const data_list_button = document.querySelector('[data-list-button]')
-const data_list_message = document.querySelector('[data-list-message]')
-
-// book summary
-const data_list_active = document.querySelector('[data-list-active]')
-const data_list_blur = document.querySelector('[data-list-blur]')
-const data_list_image = document.querySelector('[data-list-image]')
-const data_list_title = document.querySelector('[data-list-title]')
-const data_list_subtitle = document.querySelector('[data-list-subtitle]')
-const data_list_description = document.querySelector('[data-list-description]')
-const data_list_closeBtn = document.querySelector('[data-list-close]')
-
-// search 
-const data_header_searchBtn = document.querySelector('[data-header-search]')
-const data_search_cancelBtn = document.querySelector('[data-search-cancel]')
-const data_search_genres = document.querySelector('[data-search-genres]')
-const data_search_authors =document.querySelector('[data-search-authors]')
-const data_search_form = document.querySelector('[data-search-form]')
 
 let isOpen = false
 let matches = books
 let page = 1;
-
-const day = {
-    dark: '10, 10, 20',
-    light: '255, 255, 255',
-}
-const night = {
-    dark: '255, 255, 255',
-    light: '10, 10, 20',
-}
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
     const newColorScheme = e.matches ? "dark" : "light";
@@ -60,12 +24,12 @@ const data_settingsHandler = (event) => {
 }
 const data_settingsFormHandler = (event) => {
     event.preventDefault()
-    if (data_settings_theme.value == 'day') {
-        document.documentElement.style.setProperty('--color-dark', day.dark)
-        document.documentElement.style.setProperty('--color-light', day.light)
+    if (html.theme.settings_theme.value == 'day') {
+        document.documentElement.style.setProperty('--color-dark', html.theme.day.dark)
+        document.documentElement.style.setProperty('--color-light', html.theme.day.light)
     } else {
-        document.documentElement.style.setProperty('--color-dark', night.dark)
-        document.documentElement.style.setProperty('--color-light', night.light)
+        document.documentElement.style.setProperty('--color-dark', html.theme.night.dark)
+        document.documentElement.style.setProperty('--color-light', html.theme.night.light)
     }
     document.querySelector('.backdrop').style.display = 'none'
     document.querySelector('[data-settings-overlay]').style.display = ''
@@ -106,12 +70,12 @@ const data_list_itemsHandler = (event) => {
         }
     }
 
-    data_list_active.open = true
-    data_list_blur.src = bookObj.image
-    data_list_image.src = bookObj.image
-    data_list_title.innerText = bookObj.title
-    data_list_subtitle.innerText = `${authors[bookObj.author]} (${new Date(bookObj.published).getFullYear()})`
-    data_list_description.innerText = bookObj.description
+    html.summary.active.open = true
+    html.summary.blur.src = bookObj.image
+    html.summary.image.src = bookObj.image
+    html.summary.title.innerText = bookObj.title
+    html.summary.subtitle.innerText = `${authors[bookObj.author]} (${new Date(bookObj.published).getFullYear()})`
+    html.summary.description.innerText = bookObj.description
 }
 const data_searchHandler = (event) => {
     isOpen = !isOpen
@@ -238,7 +202,7 @@ const createPreviewsFragment = (booksArray, booksPerPage, Page) => {
 
     return fragment
 }
-data_list_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, page))
+html.list.data_items.appendChild(createPreviewsFragment(matches, BOOKS_PER_PAGE, page))
 
 const populateDropDown = (DropDownElement, DDType, dataObject) => {
     const fragment = document.createDocumentFragment()
@@ -260,24 +224,24 @@ const populateDropDown = (DropDownElement, DDType, dataObject) => {
     DropDownElement.appendChild(fragment)
 }
 
-populateDropDown(data_search_authors, 'Authors', authors)
-populateDropDown(data_search_genres, 'Genres', genres)
+populateDropDown(html.search.authors, 'Authors', authors)
+populateDropDown(html.search.genres, 'Genres', genres)
 
-data_list_button.disabled = !(matches.length - [page * BOOKS_PER_PAGE] > 0)
-data_list_button.innerHTML = /* html */ `
+html.list.data_button.disabled = !(matches.length - [page * BOOKS_PER_PAGE] > 0)
+html.list.data_button.innerHTML = /* html */ `
     <span>Show more</span>
     <span class="list__remaining"> (${matches.length - [page * BOOKS_PER_PAGE] > 0 ? matches.length - [page * BOOKS_PER_PAGE] : 0})</span>
 `
 
 // Event listeners
-data_header_searchBtn.addEventListener('click', data_searchHandler)
-data_search_cancelBtn.addEventListener('click', data_searchHandler)
-data_search_form.addEventListener('submit', data_searchSubmitHandler)
+html.search.search.addEventListener('click', data_searchHandler)
+html.search.cancel.addEventListener('click', data_searchHandler)
+html.search.form.addEventListener('submit', data_searchSubmitHandler)
 
-data_list_button.addEventListener('click',data_list_showHandler)
-data_list_items.addEventListener('click', data_list_itemsHandler)
-data_list_closeBtn.addEventListener('click', () => data_list_active.open = false )
+html.list.data_button.addEventListener('click',data_list_showHandler)
+html.list.data_items.addEventListener('click', data_list_itemsHandler)
+html.summary.close.addEventListener('click', () => html.summary.active.open = false )
 
-data_settings_form.addEventListener('submit', data_settingsFormHandler)
-data_header_settingsBtn.addEventListener('click', data_settingsHandler)
-data_settings_cancelBtn.addEventListener('click', data_settingsHandler)
+html.theme.settings_form.addEventListener('submit', data_settingsFormHandler)
+html.theme.settings_header.addEventListener('click', data_settingsHandler)
+html.theme.settings_cancel.addEventListener('click', data_settingsHandler)

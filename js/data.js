@@ -25416,3 +25416,41 @@ export const books = [
     "author": "8e7083f4-7613-4872-a21b-62fbe33fe180"
   }
 ]
+
+export const html = {
+  theme: {
+    settings_theme: document.querySelector('[data-settings-theme]'),
+    settings_header: document.querySelector('[data-header-settings]'),
+    settings_cancel: document.querySelector('[data-settings-cancel]'),
+    settings_form: document.querySelector('[data-settings-form]'),
+    day: {
+      dark: '10, 10, 20',
+      light: '255, 255, 255',
+    },
+    night: {
+      dark: '255, 255, 255',
+      light: '10, 10, 20',
+    }
+  },
+  list: {
+    data_items: document.querySelector('[data-list-items]'),
+    data_button: document.querySelector('[data-list-button]'),
+    data_message: document.querySelector('[data-list-message]'),
+  },
+  search: {
+    search: document.querySelector('[data-header-search]'),
+    genres: document.querySelector('[data-search-genres]'),
+    authors: document.querySelector('[data-search-authors]'),
+    form: document.querySelector('[data-search-form]'),
+    cancel: document.querySelector('[data-search-cancel]'),
+  },
+  summary: {
+    active: document.querySelector('[data-list-active]'),
+    blur: document.querySelector('[data-list-blur]'),
+    image: document.querySelector('[data-list-image]'),
+    title: document.querySelector('[data-list-title]'),
+    subtitle: document.querySelector('[data-list-subtitle]'),
+    description: document.querySelector('[data-list-description]'),
+    close: document.querySelector('[data-list-close]'),
+  }
+}
