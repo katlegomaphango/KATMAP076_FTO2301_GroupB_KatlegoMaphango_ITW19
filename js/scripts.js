@@ -72,6 +72,7 @@ const listItemsHandler = (event) => {
     html.summary.title.innerText = bookObj.title
     html.summary.subtitle.innerText = `${authors[bookObj.author]} (${new Date(bookObj.published).getFullYear()})`
     html.summary.description.innerText = bookObj.description
+    html.backdrop.style.display = 'block'
 }
 const searchHandler = (event) => {
     isOpen = !isOpen
@@ -258,7 +259,10 @@ html.search.form.addEventListener('submit', searchSubmitHandler)
 
 html.list.data_button.addEventListener('click',listShowHandler)
 html.list.data_items.addEventListener('click', listItemsHandler)
-html.summary.close.addEventListener('click', () => html.summary.active.open = false )
+html.summary.close.addEventListener('click', () => {
+    html.summary.active.open = false
+    html.backdrop.style.display = 'none'
+} )
 
 html.theme.settings_form.addEventListener('submit', settingsFormHandler)
 html.theme.settings_header.addEventListener('click', settingsHandler)
