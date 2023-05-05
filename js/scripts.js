@@ -42,6 +42,11 @@ const night = {
     light: '10, 10, 20',
 }
 
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    const newColorScheme = e.matches ? "dark" : "light";
+    console.log(e)
+});
+
 // Event Handlers
 const data_settingsHandler = (event) => {
     isOpen = !isOpen
