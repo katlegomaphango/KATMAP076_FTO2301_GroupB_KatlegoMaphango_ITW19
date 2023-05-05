@@ -17,5 +17,8 @@ The Book Connect web application has a list of books available so that users can
 - [x] As a user, I want to filter books by genre so that I can find books to read in genres that I enjoy.
 - [x] As a user, I want to toggle between dark and light modes so that I can use the app comfortably at night.
 
+### Link to Presentation Slides:
+https://docs.google.com/presentation/d/1E-N9hvYoJoOnVQZkvChwI__V4WrcZlvHUiiFzTxXoZ4/edit?usp=sharing
+
 ![day](https://user-images.githubusercontent.com/86657040/234722281-9289606b-4722-4254-9578-b94b3c2ac199.png)
 ![night](https://user-images.githubusercontent.com/86657040/234722633-c853d5bc-0944-4a27-b08e-04c68c0f89a0.png)
